@@ -1,31 +1,30 @@
 import React from "react";
 import { connect } from "react-redux";
 import styles from "./ContactsList.module.css";
-import { deleteContact } from "../../redux/contacts/contacts-actions";
+import {
+  deleteContact
+} from "../../redux/contacts/contacts-operations";
 import Notification from "../Notification";
 
-const ContactsList = ({ contacts, onDelete }) => {
+const ContactsList = ({ contacts, isLoading, onDelete }) => {
+  const showNotification = contacts.length === 0 && !isLoading;
   return (
     <>
-      {contacts.length > 0 ? (
-        <ul className={styles.contacts__list}>
-          {contacts.map((contact) => (
-            <li key={contact.id} className={styles.contacts__item}>
-              <span
-                className={styles.contacts__name}
-              >{`${contact.name}:`}</span>
-              <span className={styles.contacts__number}>{contact.number}</span>
-              <button
-                type="button"
-                className={styles.contacts__delete__btn}
-                onClick={() => onDelete(contact.id)}
-              ></button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <Notification message="No contacts here yet..." />
-      )}
+      {showNotification && <Notification message="No contacts here yet..." />}
+      {isLoading && <p>Loading...</p>}
+      <ul className={styles.contacts__list}>
+        {contacts.map((contact) => (
+          <li key={contact.id} className={styles.contacts__item}>
+            <span className={styles.contacts__name}>{`${contact.name}:`}</span>
+            <span className={styles.contacts__number}>{contact.number}</span>
+            <button
+              type="button"
+              className={styles.contacts__delete__btn}
+              onClick={() => onDelete(contact.id)}
+            ></button>
+          </li>
+        ))}
+      </ul>
     </>
   );
 };
@@ -44,6 +43,7 @@ const mapStateToProps = (state) => {
   const contactsForRender = getContactsForRender(contacts, filter);
   return {
     contacts: contactsForRender,
+    isLoading: state.contacts.loading,
   };
 };
 
