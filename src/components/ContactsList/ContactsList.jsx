@@ -4,12 +4,11 @@ import styles from "./ContactsList.module.css";
 import Notification from "../Notification";
 import { contactsOperations, contactsSelectors } from "../../redux/contacts";
 
-const ContactsList = ({ contacts, isLoading, onDelete }) => {
-  const showNotification = contacts.length === 0 && !isLoading;
+const ContactsList = ({ contacts, onDelete }) => {
+  const showNotification = contacts.length === 0;
   return (
     <>
       {showNotification && <Notification message="No contacts here yet..." />}
-      {isLoading && <p>Loading...</p>}
       <ul className={styles.contacts__list}>
         {contacts.map((contact) => (
           <li key={contact.id} className={styles.contacts__item}>
@@ -20,7 +19,6 @@ const ContactsList = ({ contacts, isLoading, onDelete }) => {
               className={styles.contacts__delete__btn}
               onClick={() => onDelete(contact.id)}
             ></button>
-            {console.log(contact.id)}
           </li>
         ))}
       </ul>

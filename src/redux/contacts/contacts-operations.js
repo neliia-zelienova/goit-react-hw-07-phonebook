@@ -24,7 +24,7 @@ const doesContactExist = (contacts, name) => {
 const getContacts = () => async (dispatch) => {
   dispatch(getContactsRequest());
   try {
-    const data = await axios.get("/contacts");
+    const { data } = await axios.get("/contacts");
     dispatch(getContactsSuccess(data));
   } catch (error) {
     dispatch(getContactsError(error));
@@ -36,7 +36,7 @@ const addContact = (name, number) => async (dispatch, getState) => {
   if (!doesContactExist(contacts.contacts, name)) {
     dispatch(addContactRequest());
     try {
-      const data = await axios.post("/contacts", { name, number });
+      const { data } = await axios.post("/contacts", { name, number });
       dispatch(addContactSuccess(data));
     } catch (error) {
       dispatch(addContactError(error));

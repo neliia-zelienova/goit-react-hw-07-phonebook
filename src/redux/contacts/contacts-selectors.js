@@ -7,7 +7,6 @@ const getContacts = (state) => state.contacts.contacts;
 const getVisibleContacts = createSelector(
   [getContacts, getFilter],
   (contacts, filter) => {
-    console.log("contacts", contacts);
     const normalizedFilter = filter.toLowerCase();
     return filter.length > 0
       ? contacts.filter((contact) =>
