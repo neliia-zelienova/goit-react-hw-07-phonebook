@@ -1,15 +1,29 @@
 import { createAction } from "@reduxjs/toolkit";
 
-export const getContactsRequest = createAction("contacts/getContactsRequest");
-export const getContactsSuccess = createAction("contacts/getContactsSuccess");
-export const getContactsError = createAction("contacts/getContactsError");
+const getContactsRequest = createAction("contacts/getContactsRequest");
+const getContactsSuccess = createAction("contacts/getContactsSuccess");
+const getContactsError = createAction("contacts/getContactsError");
 
-export const addContactRequest = createAction("contacts/addContactRequest");
-export const addContactSuccess = createAction("contacts/addContactSuccess");
-export const addContactError = createAction("contacts/addContactError");
+const addContactRequest = createAction("contacts/addContactRequest");
+const addContactSuccess = createAction("contacts/addContactSuccess");
+const addContactError = createAction("contacts/addContactError");
 
-export const deleteContactRequest = createAction("contacts/deleteContactRequest");
-export const deleteContactSuccess = createAction("contacts/deleteContactSuccess");
-export const deleteContactError = createAction("contacts/deleteContactError");
+const deleteContactRequest = createAction("contacts/deleteContactRequest");
+const deleteContactSuccess = createAction("contacts/deleteContactSuccess");
+const deleteContactError = createAction("contacts/deleteContactError");
 
-export const changeFilter = createAction("contacts/filter");
+const changeFilter = createAction("contacts/filter");
+
+// eslint-disable-next-line import/no-anonymous-default-export
+export default {
+  getContactsRequest,
+  getContactsSuccess,
+  getContactsError,
+  addContactRequest,
+  addContactSuccess,
+  addContactError,
+  deleteContactRequest,
+  deleteContactSuccess,
+  deleteContactError,
+  changeFilter,
+};

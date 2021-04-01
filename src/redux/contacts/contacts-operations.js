@@ -1,5 +1,7 @@
 import axios from "axios";
-import {
+import actions from "./contacts-actions";
+
+const {
   getContactsRequest,
   getContactsSuccess,
   getContactsError,
@@ -9,7 +11,7 @@ import {
   deleteContactRequest,
   deleteContactSuccess,
   deleteContactError,
-} from "./contacts-actions";
+} = actions;
 
 axios.defaults.baseURL = "http://localhost:4040";
 
@@ -19,29 +21,42 @@ const doesContactExist = (contacts, name) => {
   return false;
 };
 
-export const getContacts = () => (dispatch) => {
+const getContacts = () => async (dispatch) => {
   dispatch(getContactsRequest());
-  axios
-    .get("/contacts")
-    .then(({ data }) => dispatch(getContactsSuccess(data)))
-    .catch((error) => dispatch(getContactsError(error)));
+  try {
+    const data = await axios.get("/contacts");
+    dispatch(getContactsSuccess(data));
+  } catch (error) {
+    dispatch(getContactsError(error));
+  }
 };
 
-export const addContact = (name, number) => (dispatch, getState) => {
+const addContact = (name, number) => async (dispatch, getState) => {
   const { contacts } = getState();
   if (!doesContactExist(contacts.contacts, name)) {
     dispatch(addContactRequest());
-    axios
-      .post("/contacts", { name, number })
-      .then(({ data }) => dispatch(addContactSuccess(data)))
-      .catch((error) => dispatch(addContactError(error)));
+    try {
+      const data = await axios.post("/contacts", { name, number });
+      dispatch(addContactSuccess(data));
+    } catch (error) {
+      dispatch(addContactError(error));
+    }
   } else alert(`${name} is already in contacts`);
 };
 
-export const deleteContact = (id) => (dispatch) => {
+const deleteContact = (id) => async (dispatch) => {
   dispatch(deleteContactRequest());
-  axios
-    .delete(`/contacts/${id}`)
-    .then(() => dispatch(deleteContactSuccess(id)))
-    .catch((error) => dispatch(deleteContactError(error)));
+  try {
+    await axios.delete(`/contacts/${id}`);
+    dispatch(deleteContactSuccess(id));
+  } catch (error) {
+    dispatch(deleteContactError(error));
+  }
+};
+
+// eslint-disable-next-line import/no-anonymous-default-export
+export default {
+  getContacts,
+  addContact,
+  deleteContact,
 };

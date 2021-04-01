@@ -1,6 +1,8 @@
 import { combineReducers } from "redux";
 import { createReducer } from "@reduxjs/toolkit";
-import {
+import actions from "./contacts-actions";
+
+const {
   getContactsRequest,
   getContactsSuccess,
   getContactsError,
@@ -11,9 +13,7 @@ import {
   deleteContactSuccess,
   deleteContactError,
   changeFilter,
-} from "./contacts-actions";
-
-
+} = actions;
 
 const contacts = createReducer([], {
   [getContactsSuccess]: (_, { payload }) => payload,

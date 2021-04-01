@@ -1,10 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import styles from "./ContactsList.module.css";
-import {
-  deleteContact
-} from "../../redux/contacts/contacts-operations";
 import Notification from "../Notification";
+import { contactsOperations, contactsSelectors } from "../../redux/contacts";
 
 const ContactsList = ({ contacts, isLoading, onDelete }) => {
   const showNotification = contacts.length === 0 && !isLoading;
@@ -22,6 +20,7 @@ const ContactsList = ({ contacts, isLoading, onDelete }) => {
               className={styles.contacts__delete__btn}
               onClick={() => onDelete(contact.id)}
             ></button>
+            {console.log(contact.id)}
           </li>
         ))}
       </ul>
@@ -29,26 +28,13 @@ const ContactsList = ({ contacts, isLoading, onDelete }) => {
   );
 };
 
-const getContactsForRender = (contacts, filter) => {
-  const normalizedFilter = filter.toLowerCase();
-  return filter.length > 0
-    ? contacts.filter((contact) =>
-        contact.name.toLowerCase().includes(normalizedFilter)
-      )
-    : contacts;
-};
-
-const mapStateToProps = (state) => {
-  const { contacts, filter } = state.contacts;
-  const contactsForRender = getContactsForRender(contacts, filter);
-  return {
-    contacts: contactsForRender,
-    isLoading: state.contacts.loading,
-  };
-};
+const mapStateToProps = (state) => ({
+  contacts: contactsSelectors.getVisibleContacts(state),
+  isLoading: contactsSelectors.getIsLoading(state),
+});
 
 const mapDispatchToProps = (dispatch) => ({
-  onDelete: (id) => dispatch(deleteContact(id)),
+  onDelete: (id) => dispatch(contactsOperations.deleteContact(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactsList);
